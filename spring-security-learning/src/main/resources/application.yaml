@@ -1,0 +1,8 @@
+server:
+  port: 56002
+spring:
+  security:
+    user:
+      name: lokiy
+      password: 123456
+      roles: ADMIN

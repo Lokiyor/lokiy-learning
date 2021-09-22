@@ -17,22 +17,26 @@
 
     <name>lokiy-learning</name>
     <description>learning module</description>
-    <developers>lokiy</developers>
+    <developers>
+        <developer>lokiy</developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <lombok.version>1.18.20</lombok.version>
     </properties>
 
     <modules>
         <module>influxdb-learning</module>
+        <module>spring-security-learning</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
