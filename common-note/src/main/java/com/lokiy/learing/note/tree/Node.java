@@ -1,8 +1,10 @@
 package com.lokiy.learing.note.tree;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
  * @description 节点
  **/
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Node {
     /**
