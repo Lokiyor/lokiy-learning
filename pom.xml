@@ -18,7 +18,10 @@
     <name>lokiy-learning</name>
     <description>learning module</description>
     <developers>
-        <developer>lokiy</developer>
+        <developer>
+            <name>lokiy</name>
+            <email>ljy88808@gmail.com</email>
+        </developer>
     </developers>
 
     <properties>
