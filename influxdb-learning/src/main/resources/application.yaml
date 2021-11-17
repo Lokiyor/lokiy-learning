@@ -1,2 +1,11 @@
 server:
   port: 56001
+  servlet:
+    context-path: /influxdb
+spring:
+  influx:
+    url: xxx
+    user: xxx
+    password: xxx
+    database: xxx
+#    retentionPolicy:
