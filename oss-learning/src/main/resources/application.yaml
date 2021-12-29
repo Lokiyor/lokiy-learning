@@ -1,0 +1,7 @@
+server:
+  port: 56003
+
+oss:
+  qiniu:
+    access-key: xxx
+    secret-key: xxx
