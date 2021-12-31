@@ -1,7 +1,7 @@
 package com.lokiy.learning.oss.util;
 
 import cn.hutool.json.JSONUtil;
-import com.lokiy.learning.oss.config.OssQiniuProperties;
+import com.lokiy.learning.oss.config.qiniu.OssQiniuProperties;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
@@ -10,9 +10,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author lokiy

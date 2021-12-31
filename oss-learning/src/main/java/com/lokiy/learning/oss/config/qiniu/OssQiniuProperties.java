@@ -1,4 +1,4 @@
-package com.lokiy.learning.oss.config;
+package com.lokiy.learning.oss.config.qiniu;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

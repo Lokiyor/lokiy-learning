@@ -1,4 +1,4 @@
-package com.lokiy.learning.oss.config;
+package com.lokiy.learning.oss.config.qiniu;
 
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
