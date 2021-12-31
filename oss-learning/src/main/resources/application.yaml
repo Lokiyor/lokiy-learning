@@ -9,3 +9,8 @@ oss:
     endpoint: https://oss-cn-shanghai.aliyuncs.com
     access-key-id: xxx
     access-key-secret: xxx
+  minio:
+    endpoint: http://192.168.11.75:9000
+    access-key: lokiy66
+    secret-key: 12345678
+
