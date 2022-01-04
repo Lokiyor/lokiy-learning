@@ -19,6 +19,6 @@ public class OssMinioController {
 
     @PostMapping("/test")
     public String test(@RequestParam("file") MultipartFile file){
-        return OssMinioUtil.upload("lokiy-oss", "/test/", file);
+        return OssMinioUtil.upload("lokiy-oss-minio", "/test/", file);
     }
 }
