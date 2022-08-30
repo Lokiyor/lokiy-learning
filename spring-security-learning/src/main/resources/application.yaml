@@ -1,2 +1,48 @@
 server:
   port: 56002
+spring:
+  datasource:
+    druid:
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://127.0.0.1:5432/learning?useUnicode=true&characterEncoding=utf8&serverTimeZone=CTT&stringtype=unspecified
+      username: postgres
+      password: 123456
+      initial-size: 1
+      min-idle: 3
+      max-active: 100
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+
+
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 100ms
+    lettuce:
+      pool:
+      max-active: 8
+      min-idle: 1
+      max-wait: -1ms
+      shutdown-timeout: 100ms
+
+mybatis-plus:
+  mapper-locations: classpath*:com/lokiy/learning/**/mapper/xml/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: input
+      table-underline: true
+
+
+jwt:
+  header: Authorization
