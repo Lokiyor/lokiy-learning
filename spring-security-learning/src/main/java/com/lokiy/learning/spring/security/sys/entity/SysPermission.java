@@ -30,12 +30,12 @@ public class SysPermission implements Serializable {
      * 主键
      */
     @TableId(value = "id", type = IdType.INPUT)
-    private Long id;
+    private String id;
 
     /**
      * 父id
      */
-    private Long parentId;
+    private String parentId;
 
     /**
      * 权限code
@@ -98,7 +98,7 @@ public class SysPermission implements Serializable {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    private Long createBy;
+    private String createBy;
 
     /**
      * 创建时间
@@ -110,7 +110,7 @@ public class SysPermission implements Serializable {
      * 更新人
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updateBy;
+    private String updateBy;
 
     /**
      * 更新时间

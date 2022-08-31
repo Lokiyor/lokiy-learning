@@ -30,7 +30,7 @@ public class SysUser implements Serializable {
      * 主键
      */
     @TableId(value = "id", type = IdType.INPUT)
-    private Long id;
+    private String id;
 
     /**
      * 用户名
@@ -70,7 +70,7 @@ public class SysUser implements Serializable {
     /**
      * 租户id
      */
-    private Long tenantId;
+    private String tenantId;
 
     /**
      * 删除标识
@@ -83,7 +83,7 @@ public class SysUser implements Serializable {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    private Long createBy;
+    private String createBy;
 
     /**
      * 创建时间
@@ -95,7 +95,7 @@ public class SysUser implements Serializable {
      * 更新人
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updateBy;
+    private String updateBy;
 
     /**
      * 更新时间

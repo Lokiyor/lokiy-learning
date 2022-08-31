@@ -22,7 +22,7 @@ spring:
 
 
   redis:
-    database: 0
+    database: 15
     host: 127.0.0.1
     port: 6379
     password: 123456
@@ -44,5 +44,9 @@ mybatis-plus:
       table-underline: true
 
 
-jwt:
-  header: Authorization
+security:
+  jwt:
+    expiration-time: 86400
+    refresh-time: 604800
+    issuer: lokiy
+    sign-key: lokiy
