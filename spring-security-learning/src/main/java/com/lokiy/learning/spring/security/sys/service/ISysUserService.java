@@ -2,6 +2,7 @@ package com.lokiy.learning.spring.security.sys.service;
 
 import com.lokiy.learning.spring.security.sys.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysUserService extends IService<SysUser> {
 
+    SysUser getByUsername(String username);
 }

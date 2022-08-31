@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author lokiy
@@ -12,21 +13,22 @@ import java.util.Collection;
  */
 public class LoginUser implements UserDetails {
 
-    private Long userId;
-    private String username;
-    private String password;
-    private Long tenantId;
-    private boolean enabled;
+    private UserInfo userInfo;
+
+    private String tenantId;
 
     private Collection<GrantedAuthority> authorities;
 
+    private Set<String> roles;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Long getTenantId() {
-        return tenantId;
+    public LoginUser(UserInfo userInfo,
+                     String tenantId,
+                     Collection<GrantedAuthority> authorities,
+                     Set<String> roles) {
+        this.userInfo = userInfo;
+        this.tenantId = tenantId;
+        this.authorities = authorities;
+        this.roles = roles;
     }
 
     @Override
@@ -36,13 +38,13 @@ public class LoginUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "NaN";
+        return userInfo.getPassword();
     }
 
 
     @Override
     public String getUsername() {
-        return this.username;
+        return userInfo.getUsername();
     }
 
     @Override
@@ -62,6 +64,6 @@ public class LoginUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return userInfo.getStatus().equals(1);
     }
 }

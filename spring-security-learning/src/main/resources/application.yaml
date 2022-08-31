@@ -22,16 +22,17 @@ spring:
 
 
   redis:
-    database: 15
     host: 127.0.0.1
+    database: 15
     port: 6379
     password: 123456
     timeout: 100ms
     lettuce:
       pool:
-      max-active: 8
-      min-idle: 1
-      max-wait: -1ms
+        max-active: 8
+        max-wait: -1ms
+        min-idle: 1
+        max-idle: 8
       shutdown-timeout: 100ms
 
 mybatis-plus:

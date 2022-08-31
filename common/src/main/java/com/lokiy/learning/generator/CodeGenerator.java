@@ -34,19 +34,19 @@ public class CodeGenerator {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "/Users/lokiy/temp/"));
                 })
                 .strategyConfig( builder -> {
-                    builder.addInclude("sys_user", "sys_role", "sys_permission")
+                    builder.addInclude("sys_role_permission", "sys_user_role")
                             .entityBuilder()
                             .enableLombok()
-                            .logicDeleteColumnName("del_flag")
-                            .logicDeletePropertyName("delFlag")
-                            .addTableFills(
-                                    new Column("id", FieldFill.INSERT),
-                                    new Column("del_flag", FieldFill.INSERT),
-                                    new Column("create_time", FieldFill.INSERT),
-                                    new Column("create_by", FieldFill.INSERT),
-                                    new Column("update_time", FieldFill.INSERT_UPDATE),
-                                    new Column("update_by", FieldFill.INSERT_UPDATE)
-                                    )
+//                            .logicDeleteColumnName("del_flag")
+//                            .logicDeletePropertyName("delFlag")
+//                            .addTableFills(
+//                                    new Column("id", FieldFill.INSERT),
+//                                    new Column("del_flag", FieldFill.INSERT),
+//                                    new Column("create_time", FieldFill.INSERT),
+//                                    new Column("create_by", FieldFill.INSERT),
+//                                    new Column("update_time", FieldFill.INSERT_UPDATE),
+//                                    new Column("update_by", FieldFill.INSERT_UPDATE)
+//                                    )
                             .idType(IdType.INPUT)
 //                            .addTablePrefix()
                             ;

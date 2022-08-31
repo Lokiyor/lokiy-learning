@@ -1,5 +1,6 @@
 package com.lokiy.learning.spring.security.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.lokiy.learning.spring.security.sys.entity.SysUser;
 import com.lokiy.learning.spring.security.sys.mapper.SysUserMapper;
 import com.lokiy.learning.spring.security.sys.service.ISysUserService;
@@ -17,4 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
+    @Override
+    public SysUser getByUsername(String username) {
+        return this.getOne(new LambdaQueryWrapper<SysUser>()
+                .eq(SysUser::getUsername, username));
+    }
 }

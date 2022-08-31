@@ -2,6 +2,7 @@ package com.lokiy.learning.spring.security.sys.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @author Lokiy
  * @since 2022-08-30
  */
-@Controller
+@RestController
 @RequestMapping("/sys/sysUser")
 public class SysUserController {
 
