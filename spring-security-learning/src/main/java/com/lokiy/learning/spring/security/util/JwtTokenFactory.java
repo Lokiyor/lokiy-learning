@@ -1,14 +1,12 @@
 package com.lokiy.learning.spring.security.util;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import com.lokiy.learning.spring.security.model.LoginUser;
 import com.lokiy.learning.spring.security.props.JwtSettings;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +21,7 @@ import java.util.stream.Collectors;
  * @description TODO
  */
 @Component
+@Slf4j
 public class JwtTokenFactory {
 
 
@@ -41,13 +40,40 @@ public class JwtTokenFactory {
         this.settings = settings;
     }
 
+    public String createToken(String subject){
 
+        ZonedDateTime currentTime = ZonedDateTime.now();
+        JwtBuilder jwtBuilder = Jwts.builder()
+                .setSubject(subject)
+                .setIssuer(settings.getIssuer())
+                .setIssuedAt(Date.from(currentTime.toInstant()))
+                .setExpiration(Date.from(currentTime.plusSeconds(settings.getExpirationTime()).toInstant()))
+                .signWith(SignatureAlgorithm.HS512, settings.getSigningKey());
+        return jwtBuilder.compact();
+    }
+
+
+    public Claims parseToken(String token){
+        return parseTokenClaims(token);
+    }
+
+    public String getSubject(String token){
+        return parseToken(token).getSubject();
+    }
+
+
+    public boolean isTokenExpired(Claims claims){
+        return claims.getExpiration().before(new Date());
+    }
+
+
+    @Deprecated
     public String createAccessToken(LoginUser loginUser) {
         //Claims
         List<String> scopes = loginUser.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        Claims claims = Jwts.claims().setSubject(String.valueOf(loginUser.getUserId()));
-        claims.put(USER_ID, loginUser.getUserId());
+        Claims claims = Jwts.claims().setSubject(loginUser.getUsername());
+        claims.put(USER_ID, loginUser.getUserInfo().getUserId());
         claims.put(USERNAME, loginUser.getUsername());
         claims.put(PASSWORD, loginUser.getPassword());
         claims.put(ENABLED, loginUser.isEnabled());
@@ -60,11 +86,27 @@ public class JwtTokenFactory {
                 .setIssuer(settings.getIssuer())
                 .setIssuedAt(Date.from(currentTime.toInstant()))
                 .setExpiration(Date.from(currentTime.plusSeconds(settings.getExpirationTime()).toInstant()))
-                .signWith(SignatureAlgorithm.HS512, settings.getSignKey());
+                .signWith(SignatureAlgorithm.HS512, settings.getSigningKey());
         return jwtBuilder.compact();
     }
 
+    public Claims parseTokenClaims(String token){
+        try {
+            return Jwts.parser()
+                    .setSigningKey(settings.getSigningKey())
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException | SignatureException ex) {
+            log.debug("Invalid JWT Token", ex);
+            throw new BadCredentialsException("Invalid JWT token: ", ex);
+        } catch (ExpiredJwtException expiredEx) {
+            log.debug("JWT Token is expired", expiredEx);
+            throw new CredentialsExpiredException(token + "| JWT Token expired", expiredEx);
+        }
 
+    }
+
+    @Deprecated
     public String createRefreshToken(LoginUser loginUser){
         return null;
     }

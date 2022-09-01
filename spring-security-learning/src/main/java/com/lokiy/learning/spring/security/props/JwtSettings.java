@@ -32,5 +32,5 @@ public class JwtSettings {
     /**
      * 签约key
      */
-    private String signKey;
+    private String signingKey;
 }

@@ -1,5 +1,6 @@
 package com.lokiy.learning.spring.security.model;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,24 +12,25 @@ import java.util.Set;
  * @date 2022/8/31
  * @description TODO
  */
+@Data
 public class LoginUser implements UserDetails {
 
     private UserInfo userInfo;
 
     private String tenantId;
 
-    private Collection<GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    private Set<String> roles;
+    private Set<String> permissions;
 
     public LoginUser(UserInfo userInfo,
                      String tenantId,
-                     Collection<GrantedAuthority> authorities,
-                     Set<String> roles) {
+                     Collection<? extends GrantedAuthority> authorities,
+                     Set<String> permissions) {
         this.userInfo = userInfo;
         this.tenantId = tenantId;
         this.authorities = authorities;
-        this.roles = roles;
+        this.permissions = permissions;
     }
 
     @Override

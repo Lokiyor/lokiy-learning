@@ -39,4 +39,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         List<String> roleIds = sysUserRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         return this.list(new LambdaQueryWrapper<SysRole>().in(SysRole::getId, roleIds));
     }
+
+    @Override
+    public List<String> getRoleIds(String userId) {
+        List<SysUserRole> sysUserRoles = sysUserRoleService.list(new LambdaQueryWrapper<SysUserRole>()
+                .eq(SysUserRole::getUserId, userId));
+        return sysUserRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SysRole> getRoleByIds(List<String> ids) {
+        if(CollectionUtil.isEmpty(ids)){
+            return Lists.newArrayList();
+        }
+        return this.list(new LambdaQueryWrapper<SysRole>().in(SysRole::getId, ids));
+    }
 }

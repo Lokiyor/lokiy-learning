@@ -20,9 +20,8 @@ public class SysAuthController {
     private SysAuthService sysAuthService;
 
     @PostMapping("/login")
-    public R<Object> login(@RequestBody LoginParam loginParam){
+    public R<String> login(@RequestBody LoginParam loginParam){
         String token = sysAuthService.login(loginParam.getUsername(), loginParam.getPassword());
-
-        return R.success();
+        return R.result(token);
     }
 }

@@ -1,13 +1,17 @@
 package com.lokiy.learning.spring.security.sys.service;
 
-import com.lokiy.learning.spring.security.model.UserInfo;
-import com.lokiy.learning.spring.security.sys.entity.SysRole;
-import com.lokiy.learning.spring.security.sys.entity.SysUser;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.lokiy.learning.common.core.exception.BusinessException;
+import com.lokiy.learning.spring.security.constant.RedisKeyConst;
+import com.lokiy.learning.spring.security.model.LoginUser;
+import com.lokiy.learning.spring.security.util.JwtTokenFactory;
+import com.lokiy.learning.spring.security.util.RedisUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * @author lokiy
@@ -18,29 +22,26 @@ import java.util.List;
 public class SysAuthService {
 
     @Resource
-    private ISysUserService sysUserService;
+    private AuthenticationManager authenticationManager;
 
     @Resource
-    private ISysPermissionService sysPermissionService;
+    private JwtTokenFactory jwtTokenFactory;
 
     @Resource
-    private ISysRoleService sysRoleService;
+    private RedisUtil redisUtil;
+
 
     public String login(String username, String password) {
-
-        return null;
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+        if(Objects.isNull(authenticate)){
+            throw new BusinessException("用户名或密码错误");
+        }
+        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        String userId = loginUser.getUserInfo().getUserId();
+        String token = jwtTokenFactory.createToken(userId);
+        redisUtil.set(String.format(RedisKeyConst.LOGIN_USER_KEY, userId), loginUser);
+        return token;
     }
 
-
-    private UserDetails getUserDetails(String username, String password){
-        SysUser sysUser = sysUserService.getByUsername(username);
-        UserInfo userInfo = new UserInfo(sysUser.getId(),
-                sysUser.getUsername(),
-                sysUser.getPassword(),
-                sysUser.getStatus());
-        List<SysRole> sysRoles = sysRoleService.getByUserId(sysUser.getId());
-
-        return null;
-
-    }
 }

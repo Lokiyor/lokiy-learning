@@ -50,4 +50,5 @@ security:
     expiration-time: 86400
     refresh-time: 604800
     issuer: lokiy
-    sign-key: lokiy
+    signing-key: lokiy
+  exclude-urls: /auth/**
