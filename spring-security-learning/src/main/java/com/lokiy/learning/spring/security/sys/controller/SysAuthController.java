@@ -24,4 +24,11 @@ public class SysAuthController {
         String token = sysAuthService.login(loginParam.getUsername(), loginParam.getPassword());
         return R.result(token);
     }
+
+
+    @GetMapping("/logout")
+    public R<Object> logout(){
+
+        return R.success();
+    }
 }

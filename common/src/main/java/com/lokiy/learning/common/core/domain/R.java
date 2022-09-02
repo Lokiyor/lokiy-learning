@@ -68,7 +68,11 @@ public class R<T> implements Serializable {
      * @return
      */
     public static <T> R<T> success(){
-        return new R<>();
+        return new RBuilder<T>()
+                .success(true)
+                .code(CodeEnum.SUCCESS.getCode())
+                .msg(CodeEnum.SUCCESS.getMsg())
+                .build();
     }
 
     /**

@@ -29,7 +29,6 @@ public class SysUser implements Serializable {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.INPUT)
     private String id;
 
     /**
@@ -39,6 +38,7 @@ public class SysUser implements Serializable {
 
     /**
      * 密码
+     * e10adc3949ba59abbe56e057f20f883e
      */
     private String password;
 

@@ -15,4 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface ISysUserService extends IService<SysUser> {
 
     SysUser getByUsername(String username);
+
+    void add(SysUser sysUser);
 }

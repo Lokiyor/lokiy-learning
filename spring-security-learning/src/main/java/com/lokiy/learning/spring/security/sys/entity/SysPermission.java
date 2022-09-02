@@ -29,7 +29,6 @@ public class SysPermission implements Serializable {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.INPUT)
     private String id;
 
     /**

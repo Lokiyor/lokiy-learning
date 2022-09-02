@@ -24,12 +24,11 @@ public class SystemMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("start insert fill ....");
-        this.strictInsertFill(metaObject, "id", String.class, String.valueOf(snowFlakeUtil.nextId()));
         this.strictInsertFill(metaObject, "delFlag", Integer.class, 0);
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
-        this.strictInsertFill(metaObject, "createBy", String.class, "0");
+        this.strictInsertFill(metaObject, "createBy", String.class, "1");
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
-        this.strictInsertFill(metaObject, "updateBy", String.class, "0");
+        this.strictInsertFill(metaObject, "updateBy", String.class, "1");
 
     }
 
@@ -37,7 +36,7 @@ public class SystemMetaObjectHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         log.info("start update fill ....");
         this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
-        this.strictUpdateFill(metaObject, "updateBy", String.class, "0");
+        this.strictUpdateFill(metaObject, "updateBy", String.class, "1");
 
     }
 }
