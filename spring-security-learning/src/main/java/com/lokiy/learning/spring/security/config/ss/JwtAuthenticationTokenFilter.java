@@ -50,13 +50,13 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
         }
         Claims claims = jwtTokenFactory.parseToken(token);
         if(jwtTokenFactory.isTokenExpired(claims)){
-            throw new BusinessException("token已过期");
+            throw new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "token已过期");
         }
         String userId = claims.getSubject();
 
         LoginUser loginUser = (LoginUser) redisUtil.get(String.format(RedisKeyConst.LOGIN_USER_KEY, userId));
         if(Objects.isNull(loginUser)){
-            throw new BusinessException("用户未登录");
+            throw new BusinessException(HttpServletResponse.SC_FORBIDDEN, "用户未登录");
         }
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());

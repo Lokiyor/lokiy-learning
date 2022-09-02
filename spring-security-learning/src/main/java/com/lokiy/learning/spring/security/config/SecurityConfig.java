@@ -54,14 +54,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     public BasicAuthenticationFilter jwtAuthenticationTokenFilter() throws Exception {
         return new JwtAuthenticationTokenFilter(authenticationManager());
     }
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

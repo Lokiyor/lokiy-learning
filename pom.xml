@@ -114,6 +114,13 @@
             <version>${druid.version}</version>
         </dependency>
 
+
+        <!-- lettuce pool -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
