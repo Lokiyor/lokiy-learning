@@ -67,29 +67,6 @@ public class JwtTokenFactory {
     }
 
 
-    @Deprecated
-    public String createAccessToken(LoginUser loginUser) {
-        //Claims
-        List<String> scopes = loginUser.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        Claims claims = Jwts.claims().setSubject(loginUser.getUsername());
-        claims.put(USER_ID, loginUser.getUserInfo().getUserId());
-        claims.put(USERNAME, loginUser.getUsername());
-        claims.put(PASSWORD, loginUser.getPassword());
-        claims.put(ENABLED, loginUser.isEnabled());
-        claims.put(TENANT_ID, loginUser.getTenantId());
-        claims.put(SCOPES, scopes);
-        //设置jwt
-        ZonedDateTime currentTime = ZonedDateTime.now();
-        JwtBuilder jwtBuilder = Jwts.builder()
-                .addClaims(claims)
-                .setIssuer(settings.getIssuer())
-                .setIssuedAt(Date.from(currentTime.toInstant()))
-                .setExpiration(Date.from(currentTime.plusSeconds(settings.getExpirationTime()).toInstant()))
-                .signWith(SignatureAlgorithm.HS512, settings.getSigningKey());
-        return jwtBuilder.compact();
-    }
-
     public Claims parseTokenClaims(String token){
         try {
             return Jwts.parser()
@@ -106,8 +83,8 @@ public class JwtTokenFactory {
 
     }
 
-    @Deprecated
-    public String createRefreshToken(LoginUser loginUser){
-        return null;
+    public String refreshToken(String token){
+        String subject = getSubject(token);
+        return createToken(subject);
     }
 }

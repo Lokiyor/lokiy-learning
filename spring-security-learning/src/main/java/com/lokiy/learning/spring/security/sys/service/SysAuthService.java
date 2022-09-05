@@ -40,11 +40,11 @@ public class SysAuthService {
 
     public String login(String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        if(Objects.isNull(authenticate)){
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        if(Objects.isNull(authentication)){
             throw new BusinessException("用户名或密码错误");
         }
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUserInfo().getUserId();
         String token = jwtTokenFactory.createToken(userId);
         redisUtil.set(String.format(RedisKeyConst.LOGIN_USER_KEY, userId), loginUser);

@@ -4,8 +4,11 @@ import com.lokiy.learning.common.core.domain.R;
 import com.lokiy.learning.common.core.enums.CodeEnum;
 import com.lokiy.learning.common.core.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author lokiy
@@ -29,6 +32,15 @@ public class GlobalExceptionHandler {
         log.error("全局异常------>{}", e.getMessage(), e);
 
         return R.error(e.getCode() == null? CodeEnum.UNKNOWN_ERROR.getCode():e.getCode(), e.getMessage());
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public R<?> businessExceptionHandler(AccessDeniedException e) {
+        // 业务级异常返回
+        log.error("全局异常------>{}", e.getMessage(), e);
+
+        return R.error(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
     }
 
 
