@@ -1,12 +1,14 @@
 package com.lokiy.learning.spring.security.config.ss;
 
 import cn.hutool.core.util.StrUtil;
+import com.lokiy.learning.common.core.domain.R;
 import com.lokiy.learning.common.core.exception.BusinessException;
 import com.lokiy.learning.spring.security.constant.CommonConst;
 import com.lokiy.learning.spring.security.constant.RedisKeyConst;
 import com.lokiy.learning.spring.security.model.LoginUser;
 import com.lokiy.learning.spring.security.util.JwtTokenFactory;
 import com.lokiy.learning.spring.security.util.RedisUtil;
+import com.lokiy.learning.spring.security.util.WebUtil;
 import io.jsonwebtoken.Claims;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,6 +43,7 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
         super(authenticationManager);
     }
 
+
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
         String token = request.getHeader(CommonConst.TOKEN_HEADER);
@@ -50,13 +53,15 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
         }
         Claims claims = jwtTokenFactory.parseToken(token);
         if(jwtTokenFactory.isTokenExpired(claims)){
-            throw new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "token已过期");
+            WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "token已过期")));
+            return;
         }
         String userId = claims.getSubject();
 
         LoginUser loginUser = (LoginUser) redisUtil.get(String.format(RedisKeyConst.LOGIN_USER_KEY, userId));
         if(Objects.isNull(loginUser)){
-            throw new BusinessException(HttpServletResponse.SC_FORBIDDEN, "用户未登录");
+            WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_FORBIDDEN, "用户未登录")));
+            return;
         }
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());

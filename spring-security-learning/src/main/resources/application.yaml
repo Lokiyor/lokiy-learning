@@ -51,4 +51,4 @@ security:
     refresh-time: 604800
     issuer: lokiy
     signing-key: lokiy
-  exclude-urls: /auth/**
+  exclude-urls: /sys/auth/login

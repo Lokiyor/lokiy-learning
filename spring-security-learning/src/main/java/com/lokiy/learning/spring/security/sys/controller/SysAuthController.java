@@ -28,7 +28,7 @@ public class SysAuthController {
 
     @GetMapping("/logout")
     public R<Object> logout(){
-
+        sysAuthService.logout();
         return R.success();
     }
 }

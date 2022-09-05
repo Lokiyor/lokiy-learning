@@ -1,6 +1,8 @@
 package com.lokiy.learning.spring.security.config.ss;
 
+import com.lokiy.learning.common.core.domain.R;
 import com.lokiy.learning.common.core.exception.BusinessException;
+import com.lokiy.learning.spring.security.util.WebUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)  {
 
-        throw new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "用户认证失败请重新登录");
-
+        WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "用户认证失败请重新登录")));
     }
 }

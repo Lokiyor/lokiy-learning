@@ -7,5 +7,5 @@ package com.lokiy.learning.spring.security.constant;
  */
 public interface CommonConst {
 
-    String TOKEN_HEADER = "Authration";
+    String TOKEN_HEADER = "Authorization";
 }

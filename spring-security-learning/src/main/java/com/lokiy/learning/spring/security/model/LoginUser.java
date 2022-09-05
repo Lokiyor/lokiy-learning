@@ -1,6 +1,8 @@
 package com.lokiy.learning.spring.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +15,7 @@ import java.util.Set;
  * @description TODO
  */
 @Data
+@NoArgsConstructor
 public class LoginUser implements UserDetails {
 
     private UserInfo userInfo;
@@ -39,32 +42,38 @@ public class LoginUser implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return userInfo.getPassword();
     }
 
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return userInfo.getUsername();
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return userInfo.getStatus().equals(1);
     }

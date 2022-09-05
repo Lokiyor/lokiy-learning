@@ -3,6 +3,7 @@ package com.lokiy.learning.spring.security.sys.service.impl;
 import com.google.common.collect.Sets;
 import com.lokiy.learning.common.core.exception.BusinessException;
 import com.lokiy.learning.spring.security.model.LoginUser;
+import com.lokiy.learning.spring.security.model.SysGrantedAuthority;
 import com.lokiy.learning.spring.security.model.UserInfo;
 import com.lokiy.learning.spring.security.sys.entity.SysPermission;
 import com.lokiy.learning.spring.security.sys.entity.SysRole;
@@ -10,7 +11,6 @@ import com.lokiy.learning.spring.security.sys.entity.SysUser;
 import com.lokiy.learning.spring.security.sys.service.ISysPermissionService;
 import com.lokiy.learning.spring.security.sys.service.ISysRoleService;
 import com.lokiy.learning.spring.security.sys.service.ISysUserService;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,8 +49,8 @@ public class SysUserDetailsService implements UserDetailsService {
                 sysUser.getStatus());
         List<String> roleIds = sysRoleService.getRoleIds(sysUser.getId());
         List<SysRole> sysRoles = sysRoleService.getRoleByIds(roleIds);
-        List<SimpleGrantedAuthority> authorities = sysRoles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleCode()))
+        List<SysGrantedAuthority> authorities = sysRoles.stream()
+                .map(role -> new SysGrantedAuthority(role.getRoleCode()))
                 .collect(Collectors.toList());
         List<SysPermission> permissionList = sysPermissionService.getByRoleIds(roleIds);
         List<String> permissions = permissionList.stream().map(SysPermission::getCode).collect(Collectors.toList());

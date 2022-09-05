@@ -1,10 +1,10 @@
 package com.lokiy.learning.spring.security.config;
 
 import cn.hutool.core.util.StrUtil;
-import com.lokiy.learning.spring.security.config.ss.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -49,6 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private OncePerRequestFilter jwtCustomizeFilter;
 
+    @Resource
+    @Lazy
+    private BasicAuthenticationFilter jwtAuthenticationTokenFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -58,10 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    public BasicAuthenticationFilter jwtAuthenticationTokenFilter() throws Exception {
-        return new JwtAuthenticationTokenFilter(authenticationManager());
     }
 
 
@@ -105,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .and()
-                .addFilter(jwtAuthenticationTokenFilter())
+                .addFilter(jwtAuthenticationTokenFilter)
                 .addFilterBefore( jwtCustomizeFilter, UsernamePasswordAuthenticationFilter.class)
 
 
