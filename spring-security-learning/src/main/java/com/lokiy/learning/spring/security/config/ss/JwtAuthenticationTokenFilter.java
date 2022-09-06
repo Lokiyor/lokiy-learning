@@ -60,7 +60,7 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
 
         LoginUser loginUser = (LoginUser) redisUtil.get(String.format(RedisKeyConst.LOGIN_USER_KEY, userId));
         if(Objects.isNull(loginUser)){
-            WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_FORBIDDEN, "用户未登录")));
+            WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "用户未登录")));
             return;
         }
         UsernamePasswordAuthenticationToken authenticationToken =

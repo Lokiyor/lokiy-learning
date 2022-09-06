@@ -5,6 +5,7 @@ import com.lokiy.learning.common.core.enums.CodeEnum;
 import com.lokiy.learning.common.core.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -37,6 +38,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public R<?> businessExceptionHandler(AccessDeniedException e) {
+        // 业务级异常返回
+        log.error("全局异常------>{}", e.getMessage(), e);
+
+        return R.error(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public R<?> businessExceptionHandler(AuthenticationException e) {
         // 业务级异常返回
         log.error("全局异常------>{}", e.getMessage(), e);
 

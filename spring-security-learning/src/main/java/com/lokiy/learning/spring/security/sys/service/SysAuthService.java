@@ -9,6 +9,8 @@ import com.lokiy.learning.spring.security.util.JwtTokenFactory;
 import com.lokiy.learning.spring.security.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,7 @@ public class SysAuthService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         if(Objects.isNull(authentication)){
-            throw new BusinessException("用户名或密码错误");
+            throw new BadCredentialsException("用户名或密码错误");
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUserInfo().getUserId();
@@ -59,7 +61,7 @@ public class SysAuthService {
         }
         Claims claims = jwtTokenFactory.parseToken(token);
         if(jwtTokenFactory.isTokenExpired(claims)){
-            throw new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "token已过期");
+            throw new CredentialsExpiredException( "token已过期");
         }
         String userId = claims.getSubject();
         redisUtil.del(String.format(RedisKeyConst.LOGIN_USER_KEY, userId));

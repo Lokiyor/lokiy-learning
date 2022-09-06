@@ -11,6 +11,7 @@ import com.lokiy.learning.spring.security.sys.entity.SysUser;
 import com.lokiy.learning.spring.security.sys.service.ISysPermissionService;
 import com.lokiy.learning.spring.security.sys.service.ISysRoleService;
 import com.lokiy.learning.spring.security.sys.service.ISysUserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,7 +42,7 @@ public class SysUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserService.getByUsername(username);
         if(sysUser == null){
-            throw new BusinessException("用户不存在");
+            throw new UsernameNotFoundException("用户不存在");
         }
         UserInfo userInfo = new UserInfo(sysUser.getId(),
                 sysUser.getUsername(),
