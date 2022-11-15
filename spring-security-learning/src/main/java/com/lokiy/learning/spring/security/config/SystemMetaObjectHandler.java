@@ -1,7 +1,7 @@
 package com.lokiy.learning.spring.security.config;
 
+import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.lokiy.learning.spring.security.util.SnowFlakeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -19,11 +19,15 @@ import java.time.LocalDateTime;
 public class SystemMetaObjectHandler implements MetaObjectHandler {
 
     @Resource
-    private SnowFlakeUtil snowFlakeUtil;
+    private Snowflake snowflake;
 
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("start insert fill ....");
+        Object id = metaObject.getValue("id");
+        if(id == null){
+            this.strictInsertFill(metaObject, "id", String.class, snowflake.nextIdStr());
+        }
         this.strictInsertFill(metaObject, "delFlag", Integer.class, 0);
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
         this.strictInsertFill(metaObject, "createBy", String.class, "1");

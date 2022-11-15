@@ -48,7 +48,7 @@ public class SysAuthService {
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUserInfo().getUserId();
-        String token = jwtTokenFactory.createToken(userId);
+        String token = jwtTokenFactory.createToken(userId, null);
         redisUtil.set(String.format(RedisKeyConst.LOGIN_USER_KEY, userId), loginUser);
         return token;
     }

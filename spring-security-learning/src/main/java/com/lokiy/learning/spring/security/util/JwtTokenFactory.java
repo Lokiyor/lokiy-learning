@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -40,11 +41,12 @@ public class JwtTokenFactory {
         this.settings = settings;
     }
 
-    public String createToken(String subject){
+    public String createToken(String subject, Map<String, Object> claims){
 
         ZonedDateTime currentTime = ZonedDateTime.now();
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setSubject(subject)
+                .addClaims(claims)
                 .setIssuer(settings.getIssuer())
                 .setIssuedAt(Date.from(currentTime.toInstant()))
                 .setExpiration(Date.from(currentTime.plusSeconds(settings.getExpirationTime()).toInstant()))
@@ -85,6 +87,6 @@ public class JwtTokenFactory {
 
     public String refreshToken(String token){
         String subject = getSubject(token);
-        return createToken(subject);
+        return createToken(subject, null);
     }
 }
