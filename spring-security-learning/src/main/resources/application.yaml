@@ -48,7 +48,7 @@ mybatis-plus:
 security:
   jwt:
     expiration-time: 86400
-    refresh-time: 604800
+    extend-time: 3600
     issuer: lokiy
     signing-key: lokiy
-  exclude-urls: /sys/auth/login
+  exclude-urls: /auth/sys/login

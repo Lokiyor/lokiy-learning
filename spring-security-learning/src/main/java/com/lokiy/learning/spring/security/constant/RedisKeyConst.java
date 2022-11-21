@@ -7,7 +7,10 @@ package com.lokiy.learning.spring.security.constant;
  */
 public interface RedisKeyConst {
 
+    /**
+     * 存储用户token的key
+     */
+    String USER_TOKEN_KEY = "user_token:%s:%s";
 
-
-    String LOGIN_USER_KEY = "login:%s";
+    String LOGIN_USER_KEY = "login:%s:%s";
 }

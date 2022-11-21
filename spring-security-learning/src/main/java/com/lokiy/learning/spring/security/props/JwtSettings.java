@@ -20,9 +20,9 @@ public class JwtSettings {
     private Long expirationTime;
 
     /**
-     * 刷新时间
+     * token到期延长
      */
-    private Long refreshTime;
+    private Long extendTime;
 
     /**
      * 发行人

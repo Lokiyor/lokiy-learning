@@ -49,7 +49,7 @@ public class JwtTokenFactory {
                 .addClaims(claims)
                 .setIssuer(settings.getIssuer())
                 .setIssuedAt(Date.from(currentTime.toInstant()))
-                .setExpiration(Date.from(currentTime.plusSeconds(settings.getExpirationTime()).toInstant()))
+//                .setExpiration(Date.from(currentTime.plusSeconds(settings.getExpirationTime()).toInstant()))
                 .signWith(SignatureAlgorithm.HS512, settings.getSigningKey());
         return jwtBuilder.compact();
     }

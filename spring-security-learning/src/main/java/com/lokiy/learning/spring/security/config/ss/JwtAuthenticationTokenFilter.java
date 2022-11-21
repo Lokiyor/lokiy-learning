@@ -5,7 +5,9 @@ import com.lokiy.learning.common.core.domain.R;
 import com.lokiy.learning.common.core.exception.BusinessException;
 import com.lokiy.learning.spring.security.constant.CommonConst;
 import com.lokiy.learning.spring.security.constant.RedisKeyConst;
+import com.lokiy.learning.spring.security.enums.SourceEnum;
 import com.lokiy.learning.spring.security.model.LoginUser;
+import com.lokiy.learning.spring.security.props.JwtSettings;
 import com.lokiy.learning.spring.security.util.JwtTokenFactory;
 import com.lokiy.learning.spring.security.util.RedisUtil;
 import com.lokiy.learning.spring.security.util.WebUtil;
@@ -23,7 +25,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * @author lokiy
@@ -39,6 +40,9 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
     @Resource
     private JwtTokenFactory jwtTokenFactory;
 
+    @Resource
+    private JwtSettings settings;
+
     public JwtAuthenticationTokenFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -51,18 +55,27 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-        Claims claims = jwtTokenFactory.parseToken(token);
-        if(jwtTokenFactory.isTokenExpired(claims)){
+        String source = request.getHeader(CommonConst.SOURCE_HEADER);
+        if(StrUtil.isBlank(source)){
+            source = SourceEnum.SYSTEM.getSource();
+        }
+        String userId = jwtTokenFactory.getSubject(token);
+        String redisToken = (String) redisUtil.get(String.format(RedisKeyConst.USER_TOKEN_KEY, source, userId));
+        if(StrUtil.isBlank(redisToken)){
             WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "token已过期")));
             return;
         }
-        String userId = claims.getSubject();
-
-        LoginUser loginUser = (LoginUser) redisUtil.get(String.format(RedisKeyConst.LOGIN_USER_KEY, userId));
-        if(Objects.isNull(loginUser)){
-            WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "用户未登录")));
+        if(!token.equals(redisToken)){
+            WebUtil.renderResult(response, R.error(new BusinessException(HttpServletResponse.SC_UNAUTHORIZED, "token已过期")));
             return;
         }
+        //延续token时间
+        Long expire = redisUtil.getExpire(String.format(RedisKeyConst.USER_TOKEN_KEY, source, userId));
+        if(expire < settings.getExtendTime()){
+            redisUtil.set(String.format(RedisKeyConst.USER_TOKEN_KEY, source, userId), redisToken, settings.getExpirationTime());
+        }
+
+        LoginUser loginUser = (LoginUser) redisUtil.get(String.format(RedisKeyConst.LOGIN_USER_KEY, source,userId));
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

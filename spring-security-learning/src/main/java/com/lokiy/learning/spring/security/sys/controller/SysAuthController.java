@@ -13,13 +13,13 @@ import javax.annotation.Resource;
  * @description TODO
  */
 @RestController
-@RequestMapping("/sys/auth")
+@RequestMapping("/auth")
 public class SysAuthController {
 
     @Resource
     private SysAuthService sysAuthService;
 
-    @PostMapping("/login")
+    @PostMapping("/sys/login")
     public R<String> login(@RequestBody LoginParam loginParam){
         String token = sysAuthService.login(loginParam.getUsername(), loginParam.getPassword());
         return R.result(token);

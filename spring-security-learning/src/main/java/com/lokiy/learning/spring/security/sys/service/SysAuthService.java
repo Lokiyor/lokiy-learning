@@ -1,12 +1,14 @@
 package com.lokiy.learning.spring.security.sys.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.lokiy.learning.common.core.exception.BusinessException;
 import com.lokiy.learning.spring.security.constant.CommonConst;
 import com.lokiy.learning.spring.security.constant.RedisKeyConst;
 import com.lokiy.learning.spring.security.model.LoginUser;
+import com.lokiy.learning.spring.security.props.JwtSettings;
 import com.lokiy.learning.spring.security.util.JwtTokenFactory;
 import com.lokiy.learning.spring.security.util.RedisUtil;
+import com.lokiy.learning.spring.security.util.SecurityUtil;
+import com.lokiy.learning.spring.security.util.WebUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +21,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
@@ -39,6 +40,9 @@ public class SysAuthService {
     @Resource
     private RedisUtil redisUtil;
 
+    @Resource
+    private JwtSettings settings;
+
 
     public String login(String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -49,7 +53,8 @@ public class SysAuthService {
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUserInfo().getUserId();
         String token = jwtTokenFactory.createToken(userId, null);
-        redisUtil.set(String.format(RedisKeyConst.LOGIN_USER_KEY, userId), loginUser);
+        redisUtil.set(String.format(RedisKeyConst.USER_TOKEN_KEY,  WebUtil.getSource(), userId), token, settings.getExpirationTime());
+        redisUtil.set(String.format(RedisKeyConst.LOGIN_USER_KEY, WebUtil.getSource(), userId), loginUser);
         return token;
     }
 
@@ -59,11 +64,7 @@ public class SysAuthService {
         if(StrUtil.isBlank(token)){
             return;
         }
-        Claims claims = jwtTokenFactory.parseToken(token);
-        if(jwtTokenFactory.isTokenExpired(claims)){
-            throw new CredentialsExpiredException( "token已过期");
-        }
-        String userId = claims.getSubject();
-        redisUtil.del(String.format(RedisKeyConst.LOGIN_USER_KEY, userId));
+        String userId = jwtTokenFactory.getSubject(token);
+        redisUtil.del(String.format(RedisKeyConst.LOGIN_USER_KEY, WebUtil.getSource(), userId));
     }
 }
