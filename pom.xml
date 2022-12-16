@@ -39,6 +39,8 @@
         <module>influxdb-learning</module>
         <module>spring-security-learning</module>
         <module>common</module>
+        <module>oss-learning</module>
+        <module>spring-webflux-learning</module>
     </modules>
 
     <dependencyManagement>
