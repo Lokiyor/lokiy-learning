@@ -22,6 +22,11 @@
             <artifactId>mybatis-plus-generator</artifactId>
             <version>3.5.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
         <!--逆向工程需要模板引擎-->
         <dependency>
             <groupId>org.freemarker</groupId>

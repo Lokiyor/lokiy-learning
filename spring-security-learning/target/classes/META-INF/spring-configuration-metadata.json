@@ -1,0 +1,36 @@
+{
+  "groups": [
+    {
+      "name": "security.jwt",
+      "type": "com.lokiy.learning.spring.security.props.JwtSettings",
+      "sourceType": "com.lokiy.learning.spring.security.props.JwtSettings"
+    }
+  ],
+  "properties": [
+    {
+      "name": "security.jwt.expiration-time",
+      "type": "java.lang.Long",
+      "description": "过期时间",
+      "sourceType": "com.lokiy.learning.spring.security.props.JwtSettings"
+    },
+    {
+      "name": "security.jwt.extend-time",
+      "type": "java.lang.Long",
+      "description": "token到期延长",
+      "sourceType": "com.lokiy.learning.spring.security.props.JwtSettings"
+    },
+    {
+      "name": "security.jwt.issuer",
+      "type": "java.lang.String",
+      "description": "发行人",
+      "sourceType": "com.lokiy.learning.spring.security.props.JwtSettings"
+    },
+    {
+      "name": "security.jwt.signing-key",
+      "type": "java.lang.String",
+      "description": "签约key",
+      "sourceType": "com.lokiy.learning.spring.security.props.JwtSettings"
+    }
+  ],
+  "hints": []
+}

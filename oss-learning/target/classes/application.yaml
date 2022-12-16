@@ -1,0 +1,21 @@
+server:
+  port: 56003
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 100MB
+      max-file-size: 20MB
+
+oss:
+  qiniu:
+    access-key: xxx
+    secret-key: xxx
+  aliyun:
+    endpoint: https://oss-cn-shanghai.aliyuncs.com
+    access-key-id: xxx
+    access-key-secret: xxx
+  minio:
+    endpoint: http://192.168.11.75:9000
+    access-key: minio
+    secret-key: minio123
